@@ -1,6 +1,6 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["module"], factory);
+        define(['module'], factory);
     } else if (typeof exports !== "undefined") {
         factory(module);
     } else {
@@ -44,7 +44,7 @@
     }
 
     function isFunction(fn) {
-        return Object.prototype.toString.call(fn) === "[object Function]" && fn.constructor.name === "Function";
+        return typeof fn === 'function';
     }
 
     function isPlainObject(value) {
@@ -56,7 +56,7 @@
     }
 
     function checkDefined(container, key) {
-        assert(container.has(key), "Identifier \"" + key + "\" is not defined.");
+        assert(container.has(key), 'Identifier "' + key + '" is not defined.');
     }
 
     function addFunctionTo(set, fn) {
@@ -73,7 +73,7 @@
 
     var Jimple = function () {
         _createClass(Jimple, null, [{
-            key: "provider",
+            key: 'provider',
             value: function provider(register) {
                 return { register: register };
             }
@@ -105,7 +105,7 @@
 
 
         _createClass(Jimple, [{
-            key: "get",
+            key: 'get',
             value: function get(key) {
                 checkDefined(this, key);
                 var item = this._items[key];
@@ -127,37 +127,37 @@
                 return obj;
             }
         }, {
-            key: "set",
+            key: 'set',
             value: function set(key, value) {
                 this._items[key] = value;
             }
         }, {
-            key: "has",
+            key: 'has',
             value: function has(key) {
                 return this._items.hasOwnProperty(key);
             }
         }, {
-            key: "factory",
+            key: 'factory',
             value: function factory(fn) {
                 return addFunctionTo(this._factories, fn);
             }
         }, {
-            key: "protect",
+            key: 'protect',
             value: function protect(fn) {
                 return addFunctionTo(this._protected, fn);
             }
         }, {
-            key: "keys",
+            key: 'keys',
             value: function keys() {
                 return Object.keys(this._items);
             }
         }, {
-            key: "extend",
+            key: 'extend',
             value: function extend(key, fn) {
                 checkDefined(this, key);
                 var originalItem = this._items[key];
-                assert(isFunction(originalItem) && this._protected.has(originalItem) === false, "Identifier '" + key + "' does not contain a service definition");
-                assert(isFunction(fn), "The 'new' service definition for '" + key + "' is not a invokable object.");
+                assert(isFunction(originalItem) && this._protected.has(originalItem) === false, 'Identifier \'' + key + '\' does not contain a service definition');
+                assert(isFunction(fn), 'The \'new\' service definition for \'' + key + '\' is not a invokable object.');
                 this._items[key] = function (app) {
                     return fn(originalItem(app), app);
                 };
@@ -167,12 +167,12 @@
                 }
             }
         }, {
-            key: "register",
+            key: 'register',
             value: function register(provider) {
                 provider.register(this);
             }
         }, {
-            key: "raw",
+            key: 'raw',
             value: function raw(key) {
                 checkDefined(this, key);
                 return this._items[key];
